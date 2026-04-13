@@ -35,7 +35,7 @@ sizes = simsizes;
 sizes.NumContStates  = 1;     % continuous states
 sizes.NumDiscStates  = 0;     % discrete states
 sizes.NumOutputs     = 1;     % outputs
-sizes.NumInputs      = 3;     % inputs 
+sizes.NumInputs      = 4;     % inputs 
 sizes.DirFeedthrough = 0;     % System is non-causal
 sizes.NumSampleTimes = 1;     %
 sys = simsizes(sizes);        %
@@ -49,21 +49,13 @@ tss = [0,0];	              % sample time: [period, offset].
 
 function sys = mdlOutputs(t,x,u,Param)
 
-% Outputs:
-
-% States
-
 sys(1) = x(1);
-
-% ******************************************************************************************************************************
-% Derivatives
-% ******************************************************************************************************************************
 
 function sys = mdlDerivatives(t,x,u,Param)
 
 R = 188.9;            % gas constant for s CO2 (J/(kg·K))
 %T = 420 + 273.15;     % High pressure side, use the compressor outlet T (K)
-V = 80*3;               % Volume m3
+V = 0.15;               % Volume m3
 
 % States
 
@@ -71,10 +63,11 @@ ph  = x(1);
 
 % Inputs
 
-dqRB = u(1); % m_comp kg/s
-dqPB = u(2); % m_out from the compressor kg/s
+m_out = u(1); % m_comp kg/s
+m_cycle = u(2); % m_out from the compressor kg/s
 T    = u(3); % temperature (K)
-
+m_vent = u(4);
 % Derivatives:
 
-sys(1) = R*T/V*(dqRB-dqPB);      % In_pressure of the compressor Pa
+sys(1) = R*T/V*(m_out-m_cycle-m_vent);      % In_pressure of the compressor Pa
+% sys(1) = R*T/V*(dqRB-dqPB);      % In_pressure of the compressor Pa

@@ -1,0 +1,12 @@
+Overview This repository contains the code associated with the journal paper. The current implementation is configured for steady-state simulation of the system.
+Dependencies To run the model, the user must install one of the following thermophysical property libraries:
+	•	REFPROP
+	•	CoolProp
+After installation, the user must update the settings accordingly in the turbine function to match the chosen property library.
+Simulation Setup The model is currently configured to simulate steady-state conditions.
+Transient Simulation Configuration To run transient or dynamic simulations, the following parameters must be adjusted:
+	•	DeltaW: controls the magnitude of the power step
+	•	omega_set: defines the rotational speed setpoint
+	•	stepping_time: for step changes in power or omega
+	•	tchange: specifies the timing of the temperature control changes that take effect during operating point change
+In addition, the pressure change controllers in the compressor block should be enabled depending on the simulation objective.  It is recommended to begin with a steady-state simulation to ensure proper initialization and convergence. After this, the user can modify DeltaW, omega_set, and tchange, and enable compressor pressure controllers to simulate transient behavior. New initial states can be set by saving the desired final state and changing the variable names in the initialization file.
